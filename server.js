@@ -34,6 +34,10 @@ app.use((req, res, next) => {
 });
 
 // ── Health check ─────────────────────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.status(200).send('<h1>ARchSpace Backend is Running!</h1><p>API is active.</p>');
+});
+
 app.get('/health', (req, res) => {
   res.status(200).json({ ok: true, db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
 });
