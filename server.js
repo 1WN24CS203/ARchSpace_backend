@@ -327,6 +327,16 @@ app.get('/api/auth/verify', async (req, res) => {
 // ═════════════════════════════════════════════════════════════════════════════
 const BOOT_PORT = parseInt(process.env.PORT || '3000', 10);
 
+function redactMongoUri(uri) {
+  try {
+    const u = new URL(uri);
+    // Keep protocol/host/path for debugging; drop credentials + query.
+    return `${u.protocol}//${u.hostname}${u.pathname || ''}`;
+  } catch {
+    return '<redacted>';
+  }
+}
+
 async function bootstrap() {
   const mongoUri = process.env.MONGO_URI;
 
@@ -334,7 +344,7 @@ async function bootstrap() {
     // ── External MongoDB (Atlas etc.) ─────────────────────────────────────
     try {
       await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 8000 });
-      console.log(`✅ Connected to MongoDB at: ${mongoUri}`);
+      console.log(`✅ Connected to MongoDB at: ${redactMongoUri(mongoUri)}`);
     } catch (err) {
       console.error(`❌ Could not connect to MONGO_URI: ${err.message}`);
       console.log('💡 Falling back to in-memory MongoDB for this session...');
