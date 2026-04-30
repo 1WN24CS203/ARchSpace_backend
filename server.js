@@ -13,6 +13,7 @@ app.use(express.json());
 if (process.env.VERCEL) {
   app.use(async (req, res, next) => {
     try {
+      if (req.path === '/' || req.path === '/health') return next();
       if (mongoose.connection.readyState !== 1) {
         const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
         if (!uri || uri.includes('localhost')) {
@@ -25,7 +26,7 @@ if (process.env.VERCEL) {
       next();
     } catch (err) {
       console.error('Vercel DB Connection Error:', err);
-      res.status(500).json({ error: 'Database connection failed.' });
+      res.status(500).json({ error: 'Database connection failed.', details: err.message, name: err.name });
     }
   });
 }
