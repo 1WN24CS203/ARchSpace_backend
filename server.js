@@ -14,9 +14,11 @@ if (process.env.VERCEL) {
   app.use(async (req, res, next) => {
     try {
       if (mongoose.connection.readyState !== 1) {
-        const uri = process.env.MONGO_URI;
+        const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
         if (!uri || uri.includes('localhost')) {
-          return res.status(500).json({ error: 'Production MONGO_URI missing in Vercel environment variables.' });
+          return res.status(500).json({
+            error: 'Production MongoDB connection string missing in Vercel environment variables. Set MONGO_URI (or MONGODB_URI).',
+          });
         }
         await mongoose.connect(uri);
       }
