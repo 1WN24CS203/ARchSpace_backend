@@ -1,5 +1,12 @@
 {
   "version": 2,
+  "env": {
+    "MONGO_URI": "mongodb+srv://prathyushjainm:pjmp2006@cluster0.corljyj.mongodb.net/",
+    "EMAIL_SERVICE": "gmail",
+    "EMAIL_USER": "prathyushjain2006@gmail.com",
+    "EMAIL_PASS": "kbrg cxpm uhny bgiv",
+    "COMPANY_CODE": "ARCH2026"
+  },
   "builds": [
     {
       "src": "server.js",
